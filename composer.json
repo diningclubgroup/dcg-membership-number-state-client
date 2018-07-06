@@ -1,5 +1,5 @@
 {
-  "name": "dcg/dcg-membership-number-state-client",
+  "name": "dcg/dcg-lib-membership-number-state-client",
   "description": "Client for DCG Membership Number State Service",
   "type": "library",
   "require": {
