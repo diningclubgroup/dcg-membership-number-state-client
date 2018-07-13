@@ -1,6 +1,7 @@
 <?php
 
-use Dcg\Client\MembershipNumberStateClient\Client;
+use Dcg\Client\MembershipNumberState\Client;
+
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase

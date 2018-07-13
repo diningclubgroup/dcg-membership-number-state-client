@@ -1,11 +1,6 @@
 <?php
 
-namespace Dcg\Client\MembershipNumberStateClient\Utils;
-
-use Dcg\Api\MembershipNumberState\Queue\MembershipNumberStateQueue;
-use App\Jobs\EEAPIActivateRequestJob;
-use App\Jobs\EEAPIDeactivateRequestJob;
-use Log;
+namespace Dcg\Client\MembershipNumberState\Utils;
 
 class Dates
 {

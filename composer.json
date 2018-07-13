@@ -15,13 +15,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Dcg\\Client\\MembershipNumberStateClient\\": "src/MembershipNumberStateClient",
-      "Dcg\\Client\\MembershipNumberStateClient\\Utils":"src/Utils"
+      "Dcg\\Client\\MembershipNumberState\\": "src/MembershipNumberStateClient",
+      "Dcg\\Client\\MembershipNumberState\\Utils":"src/Utils"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Dcg\\Client\\MembershipNumberStateClient\\Tests\\": "tests/"
+      "Dcg\\Client\\MembershipNumberState\\Tests\\": "tests/"
     }
   }
 }

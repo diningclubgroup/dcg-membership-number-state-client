@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcg\Client\MembershipNumberStateClient\Utils;
+namespace Dcg\Client\MembershipNumberState\Utils;
 
 use GuzzleHttp;
 use GuzzleHttp\Client;
