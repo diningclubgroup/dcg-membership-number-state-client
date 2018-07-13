@@ -4,7 +4,6 @@ namespace Dcg\Client\MembershipNumberState\Utils;
 
 use GuzzleHttp;
 use GuzzleHttp\Client;
-use Log;
 
 class API{
 
@@ -15,11 +14,9 @@ class API{
 
         if (!empty($payload)) {
             if (is_array($payload) || is_object($payload)) {
-                Log::debug("converting to json");
                 // JSON encode all arrays and objects
                 $request_payload = json_encode($payload);
             } else {
-                Log::debug("not converting to json");
                 // Use the payload as-is
                 $request_payload = $payload;
             }
@@ -30,15 +27,13 @@ class API{
         $apiPayload = [
                 'headers' => $headers,
                 'body'    => $payload
-            ];
+        ];
 
         try{
 
             $requestResponse = $request->request($requestType, $uri, $apiPayload);
 
         }catch(GuzzleHttp\Exception\TransferException $e){
-
-            Log::error("catch:".$e->getMessage().$e->getCode());
 
             $statusCode = $e->getCode();
 
@@ -50,12 +45,10 @@ class API{
 
         $statusCode = $requestResponse->getStatusCode();
 
-        Log::debug($requestResponse->getBody());
-
         return ['successful' => self::statusOk($statusCode),
             'statusCode' => $statusCode,
             'responseBody' => $requestResponse->getBody()
-            ];
+        ];
     }
 
     static private function statusOk($statusCode)
