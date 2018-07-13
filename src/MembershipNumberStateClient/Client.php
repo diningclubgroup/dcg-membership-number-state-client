@@ -19,7 +19,7 @@ class Client
                 $epp = '/deactivate';
                 break;
             case 'MembershipNumberStateUpdateExpiryDateApiEndpoint':
-                $ep = '/update';
+                $ep = '/updateexpirydate';
                 break;
             default:
                 throw new \Exception("unknown endpoint requested",401);
