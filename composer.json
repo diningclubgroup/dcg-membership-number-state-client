@@ -16,7 +16,7 @@
   "autoload": {
     "psr-4": {
       "Dcg\\Client\\MembershipNumberState\\": "src/MembershipNumberStateClient",
-      "Dcg\\Client\\MembershipNumberState\\Utils":"src/Utils"
+      "Dcg\\Client\\MembershipNumberState\\Utils\\":"src/Utils"
     }
   },
   "autoload-dev": {
