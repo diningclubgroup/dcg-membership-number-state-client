@@ -9,9 +9,6 @@ class API{
 
     static public function sendRequest($headers=[], $uri, $requestType,  $payload=[] )
     {
-        Log::debug(print_r($headers,true));
-
-
         if (!empty($payload)) {
             if (is_array($payload) || is_object($payload)) {
                 // JSON encode all arrays and objects
