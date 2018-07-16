@@ -23,5 +23,8 @@
     "psr-4": {
       "Dcg\\Client\\MembershipNumberState\\Tests\\": "tests/"
     }
-  }
+  },
+  "post-update-cmd": [
+    "Dcg\\Client\\MembershipNumberState\\Config\\FileCreator::createConfigFile"
+  ]
 }

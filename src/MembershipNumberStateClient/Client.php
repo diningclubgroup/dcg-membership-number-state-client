@@ -2,14 +2,26 @@
 
 namespace Dcg\Client\MembershipNumberState;
 
+use Dcg\Client\MembershipNumberState\Config\Config;
 use Dcg\Client\MembershipNumberState\Utils\Api;
 use Dcg\Client\MembershipNumberState\Utils\Dates;
 
 
 class Client
 {
-    private function getEndPoint($endPointName){
-        $baseUrl = 'https://member-num-state.test.diningclubgroup.com/v1';
+
+	/**
+	 * @var Config
+	 */
+	protected $config;
+
+	public function __construct() {
+
+		$this->config = Config::getInstance();
+	}
+
+	private function getEndPoint($endPointName){
+        $baseUrl = $this->config->get('api_base_url');
 
         switch($endPointName){
             case 'MembershipNumberStateActivateApiEndpoint':
