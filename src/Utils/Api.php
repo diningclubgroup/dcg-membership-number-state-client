@@ -29,7 +29,7 @@ class API{
 
         try{
             $request = $apiClient->createRequest($requestType, $uri, $apiPayload);
-	        $requestResponse = $apiClient->send();
+	        $requestResponse = $apiClient->send($request);
 
         }catch(GuzzleHttp\Exception\TransferException $e){
 
