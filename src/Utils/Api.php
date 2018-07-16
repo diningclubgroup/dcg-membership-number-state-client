@@ -6,6 +6,8 @@ use GuzzleHttp;
 
 class API{
 
+    private static $client;
+
     static public function sendRequest($headers=[], $uri, $requestType,  $payload=[] )
     {
         if (!empty($payload)) {
@@ -19,7 +21,7 @@ class API{
             $payload = $request_payload;
         }
 
-        $request = new GuzzleHttp\Client();
+        $request = self::getClient();
         $apiPayload = [
                 'headers' => $headers,
                 'body'    => $payload
@@ -45,6 +47,20 @@ class API{
             'statusCode' => $statusCode,
             'responseBody' => $requestResponse->getBody()
         ];
+    }
+
+    static private function getClient()
+    {
+        if (empty(self::$client)) {
+            self::$client = new GuzzleHttp\Client();
+        }
+
+        return self::$client;
+    }
+
+    static public function setClient(GuzzleHttp\Client $client)
+    {
+        self::$client = $client;
     }
 
     static private function statusOk($statusCode)
