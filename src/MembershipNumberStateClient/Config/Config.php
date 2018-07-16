@@ -19,6 +19,7 @@ class Config {
 	/**
 	 * singleton: return self
 	 *
+	 * @param string $configFile  (Optional) The absolute filename of the config file
 	 * @return self
 	 */
 	public static function getInstance($configFile = null) {
@@ -43,6 +44,8 @@ class Config {
 
 	/**
 	 *  Get values from config file
+	 *
+	 * @param string $configFile
 	 */
 	private static function init ($configFile)
 	{
@@ -51,6 +54,8 @@ class Config {
 
 	/**
 	 * Get values from config file
+	 *
+	 * @param string $configFile The config filename
 	 * @throws ConfigFileNotFoundException
 	 */
 	private static function configFileToArray($configFile) {
