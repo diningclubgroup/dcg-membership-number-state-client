@@ -23,8 +23,5 @@
     "psr-4": {
       "Dcg\\Client\\MembershipNumberState\\Tests\\": "tests/"
     }
-  },
-  "post-package-install": [
-    "Dcg\\Client\\MembershipNumberState\\Config\\FileCreator::createConfigFile"
-  ]
+  }
 }
