@@ -3,7 +3,6 @@
 namespace Dcg\Client\MembershipNumberState\Utils;
 
 use GuzzleHttp;
-use GuzzleHttp\Client;
 
 class API{
 
@@ -20,7 +19,7 @@ class API{
             $payload = $request_payload;
         }
 
-        $request = new Client();
+        $request = new GuzzleHttp\Client();
         $apiPayload = [
                 'headers' => $headers,
                 'body'    => $payload
