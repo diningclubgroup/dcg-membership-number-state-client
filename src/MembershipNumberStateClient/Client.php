@@ -15,12 +15,13 @@ class Client
 	 */
 	protected $config;
 
-	public function __construct() {
-
+	public function __construct()
+	{
 		$this->config = Config::getInstance();
 	}
 
-	private function getEndPoint($endPointName){
+	private function getEndPoint($endPointName)
+	{
         $baseUrl = $this->config->get('api_base_url');
 
         switch($endPointName){
