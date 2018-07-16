@@ -21,7 +21,7 @@ class API{
             $payload = $request_payload;
         }
 
-        $request = self::getClient();
+        $apiClient = self::getClient();
         $apiPayload = [
                 'headers' => $headers,
                 'body'    => $payload
@@ -29,7 +29,8 @@ class API{
 
         try{
 
-            $requestResponse = $request->request($requestType, $uri, $apiPayload);
+            $request = $apiClient->createRequest($requestType, $uri, $apiPayload);
+	    $requestResponse = $request->send();
 
         }catch(GuzzleHttp\Exception\TransferException $e){
 
