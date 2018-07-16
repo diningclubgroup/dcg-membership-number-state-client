@@ -13,7 +13,6 @@ class FileCreator {
 		$configFile = $vendorDir.'/../config/membership-number-state-client.php';
 		$exampleFile = $vendorDir.'/dcg/dcg-lib-membership-number-state-client/config.php';
 
-        $configFile = self::$configFilePath;
         if (!file_exists($configFile)) {
             copy($exampleFile, $configFile);
         }
