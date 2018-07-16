@@ -24,7 +24,7 @@
       "Dcg\\Client\\MembershipNumberState\\Tests\\": "tests/"
     }
   },
-  "post-update-cmd": [
+  "post-package-install": [
     "Dcg\\Client\\MembershipNumberState\\Config\\FileCreator::createConfigFile"
   ]
 }
