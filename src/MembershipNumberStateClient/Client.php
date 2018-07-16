@@ -13,13 +13,13 @@ class Client
 
         switch($endPointName){
             case 'MembershipNumberStateActivateApiEndpoint':
-                $ep = '/activate';
+                $ep = '/eagle-eye/activate';
                 break;
             case 'MembershipNumberStateDeactivateApiEndpoint':
-                $epp = '/deactivate';
+                $epp = '/eagle-eye/deactivate';
                 break;
             case 'MembershipNumberStateUpdateExpiryDateApiEndpoint':
-                $ep = '/updateexpirydate';
+                $ep = '/eagle-eye/updateexpirydate';
                 break;
             default:
                 throw new \Exception("unknown endpoint requested",401);
