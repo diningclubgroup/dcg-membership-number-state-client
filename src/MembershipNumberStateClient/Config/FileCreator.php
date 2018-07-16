@@ -10,7 +10,7 @@ class FileCreator {
     public static function createConfigFile ($event)
     {
 		$vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
-		$configFile = $vendorDir.'/../config/membership-number-state-client.php';
+		$configFile = realpath($vendorDir.'/../config/membership-number-state-client.php');
 		$exampleFile = $vendorDir.'/dcg/dcg-lib-membership-number-state-client/config.php';
 
         if (!file_exists($configFile)) {
