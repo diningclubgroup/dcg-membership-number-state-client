@@ -3,27 +3,24 @@
 use Dcg\Client\MembershipNumberState\Client;
 
 use Dcg\Client\MembershipNumberState\Utils\API;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Subscriber\Mock;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
 {
-    public function testClientInitialisedCorrectly()
-    {
-        $client = new Client();
-
-        //Dummy test
-        $this->assertInstanceOf(Client::class, $client);
-    }
-
-
     public function testClientActivateCallSingleIsOk()
     {
-        $mockHandler = new \GuzzleHttp\Handler\MockHandler([
-            new \GuzzleHttp\Psr7\Response(200, [], json_encode(['OK']))
+        $mock = new Mock([
+            new Response(200, [], Stream::factory(json_encode(['OK'])))
         ]);
-        $handler = \GuzzleHttp\HandlerStack::create($mockHandler);
 
-        Api::setClient(new \GuzzleHttp\Client(['handler' => $handler]));
+        $client = new \GuzzleHttp\Client();
+
+        $client->getEmitter()->attach($mock);
+
+        Api::setClient($client);
 
         $client = new Client();
         $data = [['membershipNumber'=>'1234abc1234','expiryDate'=>'2018-01-01 23:59:59']];
@@ -32,12 +29,15 @@ class ClientTest extends TestCase
 
     public function testClientActivateCallManyIsOk()
     {
-        $mockHandler = new \GuzzleHttp\Handler\MockHandler([
-            new \GuzzleHttp\Psr7\Response(200, [], json_encode(['OK']))
+        $mock = new Mock([
+            new Response(200, [], Stream::factory(json_encode(['OK'])))
         ]);
-        $handler = \GuzzleHttp\HandlerStack::create($mockHandler);
 
-        Api::setClient(new \GuzzleHttp\Client(['handler' => $handler]));
+        $client = new \GuzzleHttp\Client();
+
+        $client->getEmitter()->attach($mock);
+
+        Api::setClient($client);
 
         $client = new Client();
         $data = [
@@ -49,12 +49,15 @@ class ClientTest extends TestCase
 
     public function testClientActivateCallIsNotOk()
     {
-        $mockHandler = new \GuzzleHttp\Handler\MockHandler([
-            new \GuzzleHttp\Psr7\Response(404, [], json_encode(['Error']))
+        $mock = new Mock([
+            new Response(404, [], Stream::factory(json_encode(['Error'])))
         ]);
-        $handler = \GuzzleHttp\HandlerStack::create($mockHandler);
 
-        Api::setClient(new \GuzzleHttp\Client(['handler' => $handler]));
+        $client = new \GuzzleHttp\Client();
+
+        $client->getEmitter()->attach($mock);
+
+        Api::setClient($client);
 
         $client = new Client();
         $data = [
