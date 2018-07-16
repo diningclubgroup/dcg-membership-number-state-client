@@ -5,93 +5,89 @@ use Dcg\Client\MembershipNumberState\Exception\ConfigFileNotFoundException;
 use Dcg\Client\MembershipNumberState\Exception\ConfigValueNotFoundException;
 
 class Config {
-    
-    /**
-     * @var array
-     */
-    private static $configFilePath = 'config/membership-number-state-client.php';
 
-    /**
-     * @var array
-     */
-    protected static $configValues = [];
+	/**
+	 * @var array
+	 */
+	protected static $configValues = [];
 
-    /**
-     * @var self
-     */
-    protected static $instance = null;
+	/**
+	 * @var self
+	 */
+	protected static $instance = null;
 
-    /**
-     * singleton: return self
-     *
-     * @return self
-     */
-    public static function getInstance() {
-        if (is_null(self::$instance)) {
-            self::setInstance();
-        }
-        self::init();
+	/**
+	 * singleton: return self
+	 *
+	 * @return self
+	 */
+	public static function getInstance($configFile = null) {
 
-        return self::$instance;
-    }
+		$configFile = $configFile ?: dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))))).'/config/membership-number-state-client.php';
 
-    /**
-     *  Set singleton instance
-     */
-    private static function setInstance () 
-    {
-        self::$instance = new self();
-    }
+		if (is_null(self::$instance)) {
+			self::setInstance();
+		}
+		self::init($configFile);
 
-    /**
-     *  Get values from config file
-     */
-    private static function init ()
-    {
-        self::configFileToArray();
-    }
+		return self::$instance;
+	}
 
-    /**
-     * Get values from config file
+	/**
+	 *  Set singleton instance
+	 */
+	private static function setInstance ()
+	{
+		self::$instance = new self();
+	}
+
+	/**
+	 *  Get values from config file
+	 */
+	private static function init ($configFile)
+	{
+		self::configFileToArray($configFile);
+	}
+
+	/**
+	 * Get values from config file
 	 * @throws ConfigFileNotFoundException
-     */
-    private static function configFileToArray ()
-    {  
-        $filePath = self::$configFilePath;
+	 */
+	private static function configFileToArray($configFile) {
 
-        if (file_exists($filePath)) {
-            self::$configValues = require $filePath;
-        } else {
-            throw new ConfigFileNotFoundException("Config file could not be found at: ".$filePath);
-        }
-    }
+		if (file_exists($configFile)) {
+			self::$configValues = require $configFile;
+		} else {
+			throw new ConfigFileNotFoundException("Config file could not be found at: ".$configFile);
+		}
+	}
 
-    /**
-     *  Gets the values that were in the config
-     * @return array
-     */
-    public static function getConfigValues ()
-    {
-        return self::$configValues;
-    }
+	/**
+	 *  Gets the values that were in the config
+	 * @return array
+	 */
+	public static function getConfigValues ()
+	{
+		return self::$configValues;
+	}
 
-    /**
-     * Gets specific key fom config
+	/**
+	 * Gets specific key fom config
 	 *
 	 * @param string $key	The config value identifier
 	 * @param string $default (Optional) The default value if the config value is not set
 	 * @throws ConfigValueNotFoundException
-     * @return string
-     */
-    public static function get($key, $default = null)
-    {
-        if (isset(self::$configValues[$key])) {
-            return self::$configValues[$key];
-        } elseif ($default !== null) {
-        	return $default;
+	 * @return string
+	 */
+	public static function get($key, $default = null)
+	{
+		if (isset(self::$configValues[$key])) {
+			return self::$configValues[$key];
+		} elseif ($default !== null) {
+			return $default;
 		} else {
-        	throw new ConfigValueNotFoundException("The config value was not found: ".$key);
+			throw new ConfigValueNotFoundException("The config value was not found: ".$key);
 		}
-    }
+	}
 
 }
