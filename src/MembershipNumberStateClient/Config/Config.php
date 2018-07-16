@@ -23,7 +23,7 @@ class Config {
 	 */
 	public static function getInstance($configFile = null) {
 
-		$configFile = $configFile ?: dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))))).'/config/membership-number-state-client.php';
+		$configFile = $configFile ?: (self::getRootDir() ? self::getRootDir().'/config/membership-number-state-client.php' : '');
 
 		if (is_null(self::$instance)) {
 			self::setInstance();
@@ -90,4 +90,15 @@ class Config {
 		}
 	}
 
+	/**
+	 * Gets the root dir, assumed to be once level above vendor
+	 * @return bool|string
+	 */
+	private static function getRootDir() {
+		$dir = dirname(__FILE__);
+		if (false !== ($position = strpos($dir, DIRECTORY_SEPARATOR . 'vendor'))) {
+			return substr($dir, 0, $position);
+		}
+		return false;
+	}
 }
