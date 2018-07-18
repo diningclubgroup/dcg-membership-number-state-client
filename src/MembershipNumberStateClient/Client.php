@@ -10,70 +10,104 @@ use Dcg\Client\MembershipNumberState\Utils\Dates;
 class Client
 {
 
-	/**
-	 * @var Config
-	 */
-	protected $config;
+    /**
+     * @var Config
+     */
+    protected $config;
 
-	public function __construct()
-	{
-		$this->config = Config::getInstance();
-	}
+    /**
+     * The default headers to use for any requests
+     * @var array
+     */
+    protected $defaultHeaders = [];
 
-	private function getEndPoint($endPointName)
-	{
+    /**
+     * The headers to use for any requests. Overwrites default headers.
+     * @var array
+     */
+    protected $headers = [];
+
+    public function __construct()
+    {
+        $this->config = Config::getInstance();
+        $this->defaultHeaders['Brand-Token'] = $this->config->get('api_brand_token');
+    }
+
+    /**
+     * Get the full endpoint URL
+     *
+     * @param string $endPointName e.g. MembershipNumberStateActivateApiEndpoint
+     * @return string
+     * @throws Exception\ConfigValueNotFoundException
+     * @throws \Exception
+     */
+    private function getEndPoint($endPointName)
+    {
         $baseUrl = $this->config->get('api_base_url');
 
-        switch($endPointName){
+        switch ($endPointName) {
             case 'MembershipNumberStateActivateApiEndpoint':
                 $ep = '/eagle-eye/activate';
                 break;
             case 'MembershipNumberStateDeactivateApiEndpoint':
-                $epp = '/eagle-eye/deactivate';
+                $ep = '/eagle-eye/deactivate';
                 break;
             case 'MembershipNumberStateUpdateExpiryDateApiEndpoint':
                 $ep = '/eagle-eye/updateexpirydate';
                 break;
             default:
-                throw new \Exception("unknown endpoint requested",401);
+                throw new \Exception("unknown endpoint requested", 401);
         }
-        return $baseUrl.$ep;
+        return $baseUrl . $ep;
     }
 
+    /**
+     * Activate the membership numbers
+     *
+     * @param array $membershipData an array of membership number data. <code>[['membershipNumber' => '', 'expiryDate' => 'Y-m-d H:i:s'], ...]</code>
+     * @return string
+     * @throws Exception\ConfigValueNotFoundException
+     * @throws \Exception
+     */
     public function activate(array $membershipData)
     {
-        /* we are expecting data in the format:
-        [ ['membershipNumber' => 'xx', 'expiryDate'=>'Y-m-d H:i:s']]
-        */
-        foreach($membershipData as $i=>$data){
-            if(!isset($data['membershipNumber']) || !isset($data['expiryDate'])){
-                if(!Dates::validateDate($data['expiryDate'])){
+        foreach ($membershipData as $i => $data) {
+            if (!isset($data['membershipNumber']) || !isset($data['expiryDate'])) {
+                if (!Dates::validateDate($data['expiryDate'])) {
                     throw new \InvalidArgumentException("Invalid data provided");
                 }
             }
         }
         $membershipNumberStateApiEndpoint = $this->getEndpoint('MembershipNumberStateActivateApiEndpoint');
-        $requestResponse = Api::sendRequest([],$membershipNumberStateApiEndpoint,'POST',$membershipData);
+        $requestResponse = Api::sendRequest($this->getHeaders(), $membershipNumberStateApiEndpoint, 'POST', $membershipData);
 
-        return  $requestResponse['successful'];
+        return $requestResponse['successful'];
     }
 
+    /**
+     * Deactivate the membership numbers
+     *
+     * @param array $membershipData an array of membership number data. <code>[['membershipNumber' => '', 'expiryDate' => 'Y-m-d H:i:s'], ...]</code>
+     * @return string
+     * @throws Exception\ConfigValueNotFoundException
+     * @throws \Exception
+     */
     public function deactivate(array $membershipData) /*FIXME  WIP!*/
     {
         /* we are expecting data in the format:
         [ ['membershipNumber' => 'xx', 'expiryDate'=>'Y-m-d H:i:s']]
         */
-        foreach($membershipData as $i=>$data){
-            if(!isset($data['membershipNumber']) || !isset($data['expiryDate'])){
-                if(!Dates::validateDate($data['expiryDate'])){
+        foreach ($membershipData as $i => $data) {
+            if (!isset($data['membershipNumber']) || !isset($data['expiryDate'])) {
+                if (!Dates::validateDate($data['expiryDate'])) {
                     throw new \InvalidArgumentException("Invalid data provided");
                 }
             }
         }
         $membershipNumberStateApiEndpoint = $this->getEndPoint('MembershipNumberStateDeactivateApiEndpoint');
-        $requestResponse = Api::sendRequest([],$membershipNumberStateApiEndpoint,'POST',$membershipData);
+        $requestResponse = Api::sendRequest($this->getHeaders(), $membershipNumberStateApiEndpoint, 'POST', $membershipData);
 
-        return  $requestResponse['successful'];
+        return $requestResponse['successful'];
     }
 
     public function updateExpiryDate(array $membershipData) /*Fixme WIP! */
@@ -81,17 +115,35 @@ class Client
         /* we are expecting data in the format:
         [ ['membershipNumber' => 'xx', 'expiryDate'=>'Y-m-d H:i:s']]
         */
-        foreach($membershipData as $i=>$data){
-            if(!isset($data['membershipNumber']) || !isset($data['expiryDate'])){
-                if(!Dates::validateDate($data['expiryDate'])){
+        foreach ($membershipData as $i => $data) {
+            if (!isset($data['membershipNumber']) || !isset($data['expiryDate'])) {
+                if (!Dates::validateDate($data['expiryDate'])) {
                     throw new \InvalidArgumentException("Invalid data provided");
                 }
             }
         }
         $membershipNumberStateApiEndpoint = $this->getEndPoint('MembershipNumberStateUpdateExpiryDateApiEndpoint');
-        $requestResponse = Api::sendRequest([],$membershipNumberStateApiEndpoint,'POST',$membershipData);
+        $requestResponse = Api::sendRequest($this->getHeaders(), $membershipNumberStateApiEndpoint, 'POST', $membershipData);
 
-        return  $requestResponse['successful'];
+        return $requestResponse['successful'];
+    }
+
+    /**
+     * Get the headers to use for requests
+     * @return array
+     */
+    public function getHeaders() {
+        return array_merge($this->defaultHeaders, $this->headers);
+    }
+
+    /**
+     * Set the headers to use for requests. Replaces existing headers and if a default header exists with the same
+     * name it will be overwritten.
+     *
+     * @param array $headers Key-Value array of headers to set.
+     */
+    public function setHeaders($headers) {
+        $this->headers = $headers;
     }
 
 }

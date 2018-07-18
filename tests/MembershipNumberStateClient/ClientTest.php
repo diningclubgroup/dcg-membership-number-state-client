@@ -67,4 +67,22 @@ class ClientTest extends TestCase
         $this->assertFalse($client->activate($data));
     }
 
+    public function testClientUsesDefaultHeader()
+    {
+        $client = new Client();
+        $headers = $client->getHeaders();
+        $this->assertArrayHasKey('Brand-Token', $headers);
+        $this->assertEquals($headers['Brand-Token'], '[brand-access-token]');
+    }
+
+    public function testClientUsesSetHeader()
+    {
+        $client = new Client();
+        $client->setHeaders(['Brand-Token' => 'test']);
+        $headers = $client->getHeaders();
+        $this->assertEquals($headers['Brand-Token'], 'test');
+    }
+
+
+
 }
