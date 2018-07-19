@@ -9,7 +9,7 @@ class FileCreator extends \Dcg\Config\FileCreator
      * @param Composer\Script\Event $event
      * @return string
      */
-    protected static function getSourceFile(Composer\Script\Event $event) {
+    protected static function getSourceFile(\Composer\Script\Event $event) {
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
         return $vendorDir . DIRECTORY_SEPARATOR . 'dcg' . DIRECTORY_SEPARATOR . 'dcg-lib-membership-number-state-client' . DIRECTORY_SEPARATOR . 'config.php';
     }
@@ -19,7 +19,7 @@ class FileCreator extends \Dcg\Config\FileCreator
      * @param Composer\Script\Event $event
      * @return string
      */
-    protected static function getDestinationFile(Composer\Script\Event $event) {
+    protected static function getDestinationFile(\Composer\Script\Event $event) {
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
         return dirname($vendorDir) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'membership-number-state-config.php';
     }
