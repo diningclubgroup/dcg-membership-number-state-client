@@ -2,7 +2,7 @@
 
 namespace Dcg\Client\MembershipNumberState;
 
-use Dcg\Client\MembershipNumberState\Config\Config;
+use Dcg\Client\MembershipNumberState\Config;
 use Dcg\Client\MembershipNumberState\Utils\Api;
 use Dcg\Client\MembershipNumberState\Utils\Dates;
 
