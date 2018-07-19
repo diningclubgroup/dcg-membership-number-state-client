@@ -30,7 +30,7 @@ class Client
     public function __construct()
     {
         $this->config = Config::getInstance();
-        $this->defaultHeaders['Brand-Token'] = $this->config->get('api_brand_token');
+        $this->defaultHeaders['Access-Token'] = $this->config->get('api_access_token');
     }
 
     /**
