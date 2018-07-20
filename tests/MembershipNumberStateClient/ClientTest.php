@@ -79,16 +79,16 @@ class ClientTest extends TestCase
     {
         $client = new Client();
         $headers = $client->getHeaders();
-        $this->assertArrayHasKey('Brand-Token', $headers);
-        $this->assertEquals($headers['Brand-Token'], '[brand-access-token]');
+        $this->assertArrayHasKey('Access-Token', $headers);
+        $this->assertEquals($headers['Access-Token'], 'TEST_TOKEN');
     }
 
     public function testClientUsesSetHeader()
     {
         $client = new Client();
-        $client->setHeaders(['Brand-Token' => 'test']);
+        $client->setHeaders(['Access-Token' => 'test']);
         $headers = $client->getHeaders();
-        $this->assertEquals($headers['Brand-Token'], 'test');
+        $this->assertEquals($headers['Access-Token'], 'test');
     }
 
 
