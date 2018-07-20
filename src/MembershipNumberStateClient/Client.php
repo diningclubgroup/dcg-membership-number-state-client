@@ -27,9 +27,9 @@ class Client
      */
     protected $headers = [];
 
-    public function __construct()
+    public function __construct(\Dcg\Config $config = null)
     {
-        $this->config = Config::getInstance();
+        $this->config = $config ?: Config::getInstance();
         $this->defaultHeaders['Access-Token'] = $this->config->get('api_access_token');
     }
 
