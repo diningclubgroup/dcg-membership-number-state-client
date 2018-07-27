@@ -4,11 +4,12 @@ namespace Dcg\Client\MembershipNumberState\Utils;
 
 use GuzzleHttp;
 
-class API{
+class API
+{
 
     private static $client;
 
-    static public function sendRequest($headers=[], $uri, $requestType,  $payload=[] )
+    static public function sendRequest($headers = [], $uri, $requestType, $payload = [])
     {
         if (!empty($payload)) {
             if (is_array($payload) || is_object($payload)) {
@@ -23,15 +24,15 @@ class API{
 
         $apiClient = self::getClient();
         $apiPayload = [
-                'headers' => $headers,
-                'body'    => $payload
+            'headers' => $headers,
+            'body' => $payload
         ];
 
-        try{
+        try {
             $request = $apiClient->createRequest($requestType, $uri, $apiPayload);
-	        $requestResponse = $apiClient->send($request);
+            $requestResponse = $apiClient->send($request);
 
-        }catch(GuzzleHttp\Exception\TransferException $e){
+        } catch (GuzzleHttp\Exception\TransferException $e) {
 
             $statusCode = $e->getCode();
 
@@ -58,13 +59,13 @@ class API{
         return self::$client;
     }
 
+    static private function statusOk($statusCode)
+    {
+        return ($statusCode >= 200 and $statusCode < 300) ? true : false;
+    }
+
     static public function setClient(GuzzleHttp\Client $client)
     {
         self::$client = $client;
-    }
-
-    static private function statusOk($statusCode)
-    {
-        return ($statusCode >= 200 and $statusCode < 300)? true :false;
     }
 }
