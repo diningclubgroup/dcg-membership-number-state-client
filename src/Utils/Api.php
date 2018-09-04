@@ -28,26 +28,42 @@ class API
             'body' => $payload
         ];
 
-        try {
-            $request = $apiClient->createRequest($requestType, $uri, $apiPayload);
-            $requestResponse = $apiClient->send($request);
+        $attempt = 0;
+        $tries = 3;
+        $lastException = null;
 
-        } catch (GuzzleHttp\Exception\TransferException $e) {
+        do {
+            try {
 
-            $statusCode = $e->getCode();
+                $request = $apiClient->createRequest($requestType, $uri, $apiPayload);
+                $requestResponse = $apiClient->send($request);
 
-            return ['successful' => self::statusOk($statusCode),
-                'statusCode' => $statusCode,
-                'responseBody' => $e->getMessage()
-            ];
-        }
+                $statusCode = $requestResponse->getStatusCode();
 
-        $statusCode = $requestResponse->getStatusCode();
+                return ['successful' => self::statusOk($statusCode),
+                    'statusCode' => $statusCode,
+                    'responseBody' => $requestResponse->getBody()
+                ];
+
+            } catch (GuzzleHttp\Exception\ClientException $e) {
+                $lastException = $e;
+                break;
+            } catch (\Exception $e) {
+                $lastException = $e;
+            }
+
+            $attempt++;
+
+        } while ($attempt < $tries);
+
+
+        $statusCode = $lastException->getCode();
 
         return ['successful' => self::statusOk($statusCode),
             'statusCode' => $statusCode,
-            'responseBody' => $requestResponse->getBody()
+            'responseBody' => $lastException->getMessage()
         ];
+
     }
 
     static private function getClient()
