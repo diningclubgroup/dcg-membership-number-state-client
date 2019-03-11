@@ -55,6 +55,9 @@ class Client
             case 'MembershipNumberStateUpdateExpiryDateApiEndpoint':
                 $ep = '/eagle-eye/updateexpirydate';
                 break;
+            case 'MembershipNumberStateUnexpireMembershipApiEndpoint':
+                $ep = '/eagle-eye/unexpire';
+                break;
             default:
                 throw new \Exception("unknown endpoint requested", 401);
         }
@@ -128,6 +131,23 @@ class Client
         return $requestResponse['successful'];
     }
 
+	public function unexpireMembership(array $membershipData) 
+    { 
+		/* we are expecting data in the format:
+        [ ['membershipNumber' => 'xx', 'expiryDate'=>'Y-m-d H:i:s']]
+        */
+        foreach ($membershipData as $i => $data) {
+            if (!isset($data['membershipNumber']) || !isset($data['expiryDate'])) {
+                if (!Dates::validateDate($data['expiryDate'])) {
+                    throw new \InvalidArgumentException("Invalid data provided");
+                }
+            }
+        }
+        $membershipNumberStateApiEndpoint = $this->getEndPoint('MembershipNumberStateUnexpireMembershipApiEndpoint');
+        $requestResponse = Api::sendRequest($this->getHeaders(), $membershipNumberStateApiEndpoint, 'POST', $membershipData);
+        return $requestResponse['successful'];
+    }
+    
     /**
      * Get the headers to use for requests
      * @return array
