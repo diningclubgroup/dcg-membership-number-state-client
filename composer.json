@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": ">=5.4"
+    "php": ">=5.4",
     "guzzlehttp/guzzle": "^5.3",
     "dcg/dcg-lib-config": "dev-master"
   },
