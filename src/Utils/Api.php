@@ -3,13 +3,14 @@
 namespace Dcg\Client\MembershipNumberState\Utils;
 
 use GuzzleHttp;
+use GuzzleHttp\Psr7\Request;
 
 class API
 {
 
     private static $client;
 
-    static public function sendRequest($headers = [], $uri, $requestType, $payload = [])
+    static public function sendRequest($headers, $uri, $requestType, $payload = [])
     {
         if (!empty($payload)) {
             if (is_array($payload) || is_object($payload)) {
@@ -23,10 +24,6 @@ class API
         }
 
         $apiClient = self::getClient();
-        $apiPayload = [
-            'headers' => $headers,
-            'body' => $payload
-        ];
 
         $attempt = 0;
         $tries = 3;
@@ -34,8 +31,7 @@ class API
 
         do {
             try {
-
-                $request = $apiClient->createRequest($requestType, $uri, $apiPayload);
+                $request = new Request($requestType, $uri, $headers, $payload);
                 $requestResponse = $apiClient->send($request);
 
                 $statusCode = $requestResponse->getStatusCode();

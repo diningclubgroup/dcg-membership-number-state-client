@@ -3,9 +3,10 @@
 use Dcg\Client\MembershipNumberState\Client;
 
 use Dcg\Client\MembershipNumberState\Utils\API;
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\Stream;
-use GuzzleHttp\Subscriber\Mock;
 use PHPUnit\Framework\TestCase;
 use Dcg\Client\MembershipNumberState\Config;
 
@@ -25,13 +26,12 @@ class ClientTest extends TestCase
 
     public function testClientActivateCallSingleIsOk()
     {
-        $mock = new Mock([
+        $mock = new MockHandler([
             new Response(200, [], Stream::factory(json_encode(['OK'])))
         ]);
+        $handler = HandlerStack::create($mock);
 
-        $client = new \GuzzleHttp\Client();
-
-        $client->getEmitter()->attach($mock);
+        $client = new \GuzzleHttp\Client(['handler' => $handler]);
 
         Api::setClient($client);
 
@@ -42,13 +42,12 @@ class ClientTest extends TestCase
 
     public function testClientActivateCallManyIsOk()
     {
-        $mock = new Mock([
+        $mock = new MockHandler([
             new Response(200, [], Stream::factory(json_encode(['OK'])))
         ]);
+        $handler = HandlerStack::create($mock);
 
-        $client = new \GuzzleHttp\Client();
-
-        $client->getEmitter()->attach($mock);
+        $client = new \GuzzleHttp\Client(['handler' => $handler]);
 
         Api::setClient($client);
 
@@ -62,13 +61,12 @@ class ClientTest extends TestCase
 
     public function testClientActivateCallIsNotOk()
     {
-        $mock = new Mock([
+        $mock = new MockHandler([
             new Response(404, [], Stream::factory(json_encode(['Error'])))
         ]);
+        $handler = HandlerStack::create($mock);
 
-        $client = new \GuzzleHttp\Client();
-
-        $client->getEmitter()->attach($mock);
+        $client = new \GuzzleHttp\Client(['handler' => $handler]);
 
         Api::setClient($client);
 
